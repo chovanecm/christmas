@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<!--
+	Overflow by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Overflow by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+	<script language="JavaScript" type="text/javascript">
+		const encrypting = false;
+
+		const allowedCharacters = " ,.:/?=-_'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789()!žťčýůňěďáéóúíšř;{}\t\"\r\n";
+		const charToKey = char => {
+			return allowedCharacters.indexOf(char);
+		};
+		const keyToChar = c => allowedCharacters[c];
+		const strToKeys = str => str.split("").map(charToKey);
+		const keysToStr = keys => keys.map(keyToChar).join("");
+
+
+		const addKey = (open, key) => (open + key) % allowedCharacters.length;
+		const addKeyReverse = (encoded, key) => (encoded - key + allowedCharacters.length) % allowedCharacters.length;
+		/**
+		 * @param {string[]} keys
+		 * @param {string} text
+		 * @param {boolean} [decode=false]
+		 * */
+		function encode(keys, text, decode = false) {
+			let key;
+			if (keys.length > 1) {
+				const lastKey = keys[keys.length - 1];
+				key = encode([lastKey], keys.slice(0, keys.length - 1).join(""), false) + lastKey;
+			} else {
+				key = keys.join("");
+			}
+			key = strToKeys(key);
+			const textAsCode = strToKeys(text);
+			return keysToStr(textAsCode.map((charCodeText, index) => {
+				if (decode) {
+					return addKeyReverse(charCodeText, key[index % key.length]);
+				} else {
+					return addKey(charCodeText, key[index % key.length]);
+				}
+			}));
+		}
+		const data = {"task1":{"heading":"JéRiSIoRgyCPá3\"\tPQ4RAekAWkbčTč","content":"Mý6sy0CrhIJh'ňS1/X5KP\rkLhemě1nMH2ěxCLYó;_4sO8yN7NMn/;)5s2HKSfPewás2UCV)JJáPoI3lžRhS)oQžyRlZ-čt=xDknů3CI/gIE/SUMrbcC'/e(E/R9MVá JJ'hóq/ť )rfyyRg;2DnM0GD:kNWa/žRqy(GD=yR3á/6!tMnLbáOXFhď60šy!CreEJF\nbJ6mAGknůgůF=66DDIHRj/kKN-bý0Cy2CUáDCvxn4Xey9yN\tkTJálů1pMnLPeNGvfoý4ezHIU L?ve-S8C3ZLV-kXv?-)tlWHzV.OqvAiěNzy1Th==LláeýQmy6PPáNCSfhSvíLVIr=_BZú;ěRx28LrhuJZ ;YJ/H(FFcOMY l1"},"task2":{"heading":"q6)M)ňo6nTSYdFs","content":"vW6ůXýCak)S8aKAHRPSá0\tlZMdřt\t mRuzEuKdGV\n!ň00F/CWg86(8ICt3rQěHrlHCsAj=vvGrB-GFtHQ\"\tWF9Tózůáj6J'Be8Yi'lA"},"task3":{"heading":"Pcb,-Cb'ťď_oT';m'","content":"5p'\"=áúS05íqxř_j}i.0gúgj,1š.,;!eúřf\t,š -0=P{ňk{ůřúzťcc-t)lM_)iDk_ď}uógoďs'ťďďž{(Yt:,'\temúd!zcěb1Gá;ď{hě;ťu\ns4_igAeťiýo=;b\"}}yIšZ6;!{4újqš,o:ň=u\rňďéáó}w'ěY }cd6ďd=To\"fdo.žf;{}\n}ď?N0é{c\"šldk;=ářx5ó1Bl(í?\"éňgAcň9da!Tg=gjiZ"},"task4":{"heading":"DěJc7)yVwS!1n)wq","content":"ZěQ\t2)iFb0!m\n=i0\r6Tž\tSwVDYNuSLaNéXPBQňjWyď3Yyúo1čUWóQfďWl-17VZdxjkiúPl84'vHťčL'(eé_čzíáQ=KH\t1309Qmod=čgnSxNů4FBe4 íSm\rčEAéP4\"\"řáůó"}};
+		const transformedData = {};
+
+		function unlock(task, ...keys) {
+			const key = keys.map(key => document.getElementById(key).value || ".");
+			transformedData[task] = {
+				heading: encode(key, data[task].heading, !encrypting),
+				content: encode(key, data[task].content, !encrypting)
+			}
+			document.getElementById(task + "-heading").innerHTML =
+				transformedData[task].heading;
+			document.getElementById(task + "-content").innerHTML =
+				transformedData[task].content;
+		}
+	</script>
+</head>
+
+<body class="is-preload">
+
+	<!-- Header -->
+	<section id="header">
+		<header>
+			<h1>Díky za koňak</h1>
+			<p>Christmas Quiz</p>
+		</header>
+		<footer>
+			<a href="#banner" class="button style2 scrolly-middle">Continue</a>
+		</footer>
+	</section>
+
+	<!-- Banner -->
+	<section id="banner">
+		<header>
+			<h2>About the Quiz</h2>
+		</header>
+		<p>This quiz consists of a number of questions that, once solved,
+			reveal instructions for getting your Christmas present.</p>
+		<p>
+			<ol>
+				<li><label>First Name: <input type="text" id="kn1" oninput="unlock('task1', 'kn1', 'kn2')"></label></li>
+				<li><label>Last Name: <input type="text" id="kn2" oninput="unlock('task1', 'kn1', 'kn2')"></label></li>
+			</ol>
+		</p>
+		<footer>
+			<a href="#first" class="button style2 scrolly">Get Started</a>
+		</footer>
+	</section>
+
+	<!-- Feature 1 -->
+	<article id="first" class="container box style1 right">
+		<a href="#" class="image fit"><img src="images/pic01.jpg" alt="" /></a>
+		<div class="inner">
+			<header>
+				<h2 id="task1-heading">...</h2>
+			</header>
+			<p id="task1-content">
+				...
+			</p>
+			<p>
+				<ol>
+					<li><label>First: <input type="text" id="k1"
+								oninput="unlock('task2', 'kn1', 'kn2', 'k1')"></label>
+					</li>
+				</ol>
+			</p>
+		</div>
+	</article>
+	
+			<!-- Feature 2 -->
+				<article class=" container box style1 left">
+							<a href="#" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
+							<div class="inner">
+								<header>
+									<h2 id="task2-heading">...</h2>
+								</header>
+								<p id="task2-content">...</p>
+								<p>
+									<ol>
+										<li><label>Name: <input type="text" id="k4"
+													oninput="unlock('task3', 'kn1', 'kn2', 'k1', 'k4', 'k5')""></label></li>
+								<input type="hidden" id="k5" value="10700" oninput="unlock('task3', 'kn1', 'kn2', 'k1',  'k4', 'k5')"">
+							</ol>
+						</p>
+					</div>
+				</article>
+	
+				<!-- Feature 3 -->
+	
+				<article id=" third" class="container box style1 right">
+												<a href="#" class="image fit"><img id="task3-img" src="images/pic03.jpg"
+														alt="" /></a>
+												<div class="inner">
+													<header>
+														<h2 id="task3-heading">...</h2>
+													</header>
+													<p id="task3-content">...</p>
+													<p>
+														<ol>
+															<li><label>Key: <input type="text" id="k6"
+																		oninput="unlock('task4', 'kn1', 'kn2', 'k1', 'k4', 'k5', 'k6')"></label>
+															</li>
+														</ol>
+													</p>
+												</div>
+	</article>
+
+
+	<section id="banner">
+		<header>
+			<h2 id="task4-heading"></h2>
+		</header>
+		<p id="task4-content">...</p>
+	</section>
+
+	<!-- Generic -->
+	<!--
+				<article class="container box style3">
+					<header>
+						<h2>Generic Box</h2>
+						<p>Just a generic box. Nothing to see here.</p>
+					</header>
+					<section>
+						<header>
+							<h3>Paragraph</h3>
+							<p>This is a subtitle</p>
+						</header>
+						<p>Phasellus nisl nisl, varius id <sup>porttitor sed pellentesque</sup> ac orci. Pellentesque
+						habitant <strong>strong</strong> tristique <b>bold</b> et netus <i>italic</i> malesuada <em>emphasized</em> ac turpis egestas. Morbi
+						leo suscipit ut. Praesent <sub>id turpis vitae</sub> turpis pretium ultricies. Vestibulum sit
+						amet risus elit.</p>
+					</section>
+					<section>
+						<header>
+							<h3>Blockquote</h3>
+						</header>
+						<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget.
+						tempus euismod. Vestibulum ante ipsum primis in faucibus.</blockquote>
+					</section>
+					<section>
+						<header>
+							<h3>Divider</h3>
+						</header>
+						<p>Donec consectetur <a href="#">vestibulum dolor et pulvinar</a>. Etiam vel felis enim, at viverra
+						ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel. Praesent nec orci
+						facilisis leo magna. Cras sit amet urna eros, id egestas urna. Quisque aliquam
+						tempus euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+						posuere cubilia.</p>
+						<hr />
+						<p>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra
+						ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel. Praesent nec orci
+						facilisis leo magna. Cras sit amet urna eros, id egestas urna. Quisque aliquam
+						tempus euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+						posuere cubilia.</p>
+					</section>
+					<section>
+						<header>
+							<h3>Unordered List</h3>
+						</header>
+						<ul>
+							<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
+							<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
+							<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
+							<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
+						</ul>
+					</section>
+					<section>
+						<header>
+							<h3>Ordered List</h3>
+						</header>
+						<ol>
+							<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
+							<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
+							<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
+							<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
+						</ol>
+					</section>
+					<section>
+						<header>
+							<h3>Table</h3>
+						</header>
+						<div class="table-wrapper">
+							<table>
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Name</th>
+										<th>Description</th>
+										<th>Price</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>45815</td>
+										<td>Something</td>
+										<td>Ut porttitor sagittis lorem quis nisi ornare.</td>
+										<td>29.99</td>
+									</tr>
+									<tr>
+										<td>24524</td>
+										<td>Nothing</td>
+										<td>Ut porttitor sagittis lorem quis nisi ornare.</td>
+										<td>19.99</td>
+									</tr>
+									<tr>
+										<td>45815</td>
+										<td>Something</td>
+										<td>Ut porttitor sagittis lorem quis nisi ornare.</td>
+										<td>29.99</td>
+									</tr>
+									<tr>
+										<td>24524</td>
+										<td>Nothing</td>
+										<td>Ut porttitor sagittis lorem quis nisi ornare.</td>
+										<td>19.99</td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="3"></td>
+										<td>100.00</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</section>
+					<section>
+						<header>
+							<h3>Form</h3>
+						</header>
+						<form method="post" action="#">
+							<div class="row">
+								<div class="col-6 col-12-mobile">
+									<input class="text" type="text" name="name" id="name" value="" placeholder="John Doe" />
+								</div>
+								<div class="col-6 col-12-mobile">
+									<input class="text" type="text" name="email" id="email" value="" placeholder="johndoe@domain.tld" />
+								</div>
+								<div class="col-12">
+									<select name="department" id="department">
+										<option value="">Choose a department</option>
+										<option value="1">Manufacturing</option>
+										<option value="2">Administration</option>
+										<option value="3">Support</option>
+									</select>
+								</div>
+								<div class="col-12">
+									<input class="text" type="text" name="subject" id="subject" value="" placeholder="Enter your subject" />
+								</div>
+								<div class="col-12">
+									<textarea name="message" id="message" placeholder="Enter your message"></textarea>
+								</div>
+								<div class="col-12">
+									<ul class="actions">
+										<li><input type="submit" value="Submit" /></li>
+										<li><input type="reset" class="style3" value="Clear Form" /></li>
+									</ul>
+								</div>
+							</div>
+						</form>
+					</section>
+				</article>
+			-->
+
+	<section id="footer">
+
+		<div class="copyright">
+			<ul class="menu">
+				<li>&copy; Všechna práva ukradena.</li>
+				<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+			</ul>
+		</div>
+
+	</section>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/jquery.poptrox.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
